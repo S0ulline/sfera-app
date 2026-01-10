@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Сфера Маникюра</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        :root {
+            /* Используем переменные Telegram для нативности */
+            --bg-color: var(--tg-theme-bg-color, #fff);
+            --text-color: var(--tg-theme-text-color, #000);
+            --hint-color: var(--tg-theme-hint-color, #999);
+            --button-color: var(--tg-theme-button-color, #3390ec);
+            --button-text-color: var(--tg-theme-button-text-color, #fff);
+            --secondary-bg: var(--tg-theme-secondary-bg-color, #f0f0f0);
+
+            /* Брендовый цвет (можно поменять) */
+            --brand-color: #e91e63;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--secondary-bg);
+            color: var(--text-color);
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .card {
+            background-color: var(--bg-color);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .status {
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .info-label {
+            color: var(--hint-color);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        button:active {
+            opacity: 0.7;
+        }
+
+        .btn-primary {
+            background-color: var(--button-color);
+            color: var(--button-text-color);
+        }
+
+        .btn-danger {
+            background-color: #ef4444;
+            color: white;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--button-color);
+            color: var(--button-color);
+        }
+
+        .main-action {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: var(--hint-color);
+            margin-top: 50px;
+            display: none;
+        }
+
+    </style>
+</head>
+<body>
+
+    <h1>Сфера Маникюра 💅</h1>
+
+    <div id="appointments-list">
+        <div class="card" id="demo-card">
+            <div class="card-header">
+                <span>Маникюр + Покрытие</span>
+                <span class="status">Подтверждено</span>
+            </div>
+
+            <div class="info-row">
+                <span class="info-label">Дата:</span>
+                <span>10.01.2025 в 14:00</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Мастер:</span>
+                <span>Вера</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Стоимость:</span>
+                <span>5 000 ₽</span>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn-outline" onclick="rescheduleApp()">Перенести</button>
+                <button class="btn-danger" onclick="cancelApp()">Отменить</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="empty-state" id="empty-msg">
+        У вас пока нет активных записей.
+    </div>
+
+    <div class="main-action">
+        <button class="btn-primary" onclick="newBooking()">+ Записаться онлайн</button>
+    </div>
+
+    <script>
+        // Инициализация Telegram WebApp
+        const tg = window.Telegram.WebApp;
+        tg.expand(); // Развернуть на весь экран
+
+        // Основная кнопка (MainButton) Telegram
+        tg.MainButton.text = "ЗАПИСАТЬСЯ";
+        tg.MainButton.show();
+        tg.MainButton.onClick(newBooking);
+
+        function cancelApp() {
+            tg.showPopup({
+                title: 'Отмена записи',
+                message: 'Вы уверены, что хотите отменить запись к мастеру Вера?',
+                buttons: [
+                    {id: 'yes', type: 'destructive', text: 'Да, отменить'},
+                    {id: 'no', type: 'cancel', text: 'Нет'}
+                ]
+            }, function(btnId) {
+                if (btnId === 'yes') {
+                    // Логика удаления (скрываем карточку для демо)
+                    document.getElementById('demo-card').style.display = 'none';
+                    document.getElementById('empty-msg').style.display = 'block';
+                    tg.showAlert("Запись успешно отменена");
+                }
+            });
+        }
+
+        function rescheduleApp() {
+            // В реальном проекте здесь открылся бы календарь YCLIENTS
+            tg.showPopup({
+                title: 'Перенос записи',
+                message: 'Для переноса записи откроется календарь. Продолжить?',
+                buttons: [
+                    {id: 'ok', type: 'default', text: 'Открыть календарь'},
+                    {type: 'cancel'}
+                ]
+            });
+        }
+
+        function newBooking() {
+            // Демонстрация
+            tg.showAlert("Здесь откроется форма выбора услуг и мастеров (интеграция с YCLIENTS API).");
+        }
+    </script>
+</body>
+</html>
