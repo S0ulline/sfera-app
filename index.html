@@ -7,182 +7,164 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
-            --bg-color: var(--tg-theme-bg-color, #fff);
-            --text-color: var(--tg-theme-text-color, #000);
-            --hint-color: var(--tg-theme-hint-color, #999);
-            --btn-color: var(--tg-theme-button-color, #e91e63);
-            --btn-text: var(--tg-theme-button-text-color, #fff);
-            --secondary-bg: var(--tg-theme-secondary-bg-color, #f5f5f5);
+            --bg-color: var(--tg-theme-bg-color, #ffffff);
+            --text-color: var(--tg-theme-text-color, #222222);
+            --hint-color: var(--tg-theme-hint-color, #a8a8a8);
+            --main-color: #e91e63; /* Брендовый розовый */
+            --secondary-bg: var(--tg-theme-secondary-bg-color, #f4f4f5);
+            --block-bg: var(--tg-theme-bg-color, #ffffff);
         }
 
         body {
-            margin: 0; padding: 16px;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, sans-serif;
-            background-color: var(--bg-color); color: var(--text-color);
-        }
-
-        /* Утилиты скрытия экранов */
-        .screen { display: none; animation: fadeIn 0.3s ease; }
-        .active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        h1, h2 { text-align: center; margin-bottom: 20px; }
-        h2 { font-size: 18px; color: var(--hint-color); font-weight: normal; }
-
-        /* Карточки записей */
-        .card {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--secondary-bg);
-            border-radius: 12px; padding: 16px; margin-bottom: 12px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            color: var(--text-color);
+            -webkit-font-smoothing: antialiased;
         }
-        .card-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; }
-        .card-label { color: var(--hint-color); }
-        .card-status { color: #10b981; font-weight: bold; font-size: 12px; background: #d1fae5; padding: 2px 8px; border-radius: 4px;}
 
-        /* Кнопки действий в карточке */
-        .actions { display: flex; gap: 8px; margin-top: 12px; }
-        .act-btn {
-            flex: 1; padding: 10px; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer;
+        /* Анимация переходов */
+        .screen { display: none; padding: 16px; padding-bottom: 80px; animation: fadeEffect 0.2s; }
+        .screen.active { display: block; }
+        @keyframes fadeEffect { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Заголовки */
+        h1 { font-size: 22px; margin: 10px 0 20px 0; font-weight: 700; }
+        h3 { font-size: 14px; text-transform: uppercase; color: var(--hint-color); margin: 20px 0 10px 0; letter-spacing: 0.5px; }
+
+        /* Карточки */
+        .card {
+            background: var(--block-bg);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
-        .btn-cancel { background: #fee2e2; color: #ef4444; }
-        .btn-reschedule { background: transparent; border: 1px solid var(--btn-color); color: var(--btn-color); }
 
-        /* Списки выбора (Услуги, Мастера) */
+        /* Элементы списка (меню) */
         .list-item {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 16px; border-bottom: 1px solid var(--secondary-bg); cursor: pointer;
+            display: flex; justify-content: space-between; align-items: center;
+            background: var(--block-bg);
+            padding: 16px;
+            border-bottom: 1px solid var(--secondary-bg);
+            cursor: pointer;
         }
+        .list-item:first-child { border-top-left-radius: 12px; border-top-right-radius: 12px; }
+        .list-item:last-child { border-bottom-left-radius: 12px; border-bottom-right-radius: 12px; border-bottom: none; }
         .list-item:active { background-color: var(--secondary-bg); }
-        .item-price { font-weight: bold; }
+
+        /* Кнопки в карточке записи */
+        .btn-row { display: flex; gap: 10px; margin-top: 15px; }
+        .btn-small {
+            flex: 1; padding: 10px; border-radius: 8px; font-size: 13px; font-weight: 600; border: none; cursor: pointer;
+        }
+        .btn-outline { background: transparent; border: 1px solid var(--main-color); color: var(--main-color); }
+        .btn-danger { background: rgba(255, 59, 48, 0.1); color: #ff3b30; }
 
         /* Сетка времени */
-        .time-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 20px; }
-        .time-slot {
-            padding: 12px; border: 1px solid var(--hint-color); border-radius: 8px;
-            text-align: center; font-size: 14px; cursor: pointer;
+        .time-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+        .time-chip {
+            background: var(--block-bg); padding: 10px; border-radius: 8px; text-align: center; font-size: 14px;
+            border: 1px solid transparent; cursor: pointer;
         }
-        .time-slot.selected { background-color: var(--btn-color); color: var(--btn-text); border-color: var(--btn-color); }
+        .time-chip.selected { background: var(--main-color); color: white; box-shadow: 0 4px 10px rgba(233, 30, 99, 0.3); }
 
-        /* Итоговый экран */
-        .success-icon { font-size: 48px; text-align: center; display: block; margin: 20px 0; }
-        .summary-box { background: var(--secondary-bg); padding: 15px; border-radius: 10px; margin: 20px 0; }
-        
-        .main-btn-container { position: fixed; bottom: 20px; left: 20px; right: 20px; }
+        /* Инфо-блоки */
+        .info-row { display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 14px; }
+        .info-label { color: var(--hint-color); }
+        .status-badge { background: #e0f2f1; color: #00695c; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <div id="screen-home" class="screen active">
-        <h1 id="greeting">Привет! 👋</h1>
-        <div id="appointments-container">
+        <h1 id="greeting">👋 Добрый день!</h1>
+        
+        <h3>Мои записи</h3>
+        <div id="appointments-list">
             </div>
-        <p id="empty-msg" style="text-align:center; color: var(--hint-color); display:none;">
-            У вас пока нет предстоящих записей.
-        </p>
+        <div id="empty-state" style="text-align: center; color: var(--hint-color); margin-top: 40px; display: none;">
+            У вас пока нет активных записей.
+        </div>
+
+        <h3>Наше меню</h3>
+        <div class="list-wrapper">
+            <div class="list-item" onclick="alert('Здесь могла быть инфо о салоне')">
+                <span>📍 О салоне</span> <span>›</span>
+            </div>
+            <div class="list-item" onclick="alert('Здесь прайс-лист')">
+                <span>💲 Прайс-лист</span> <span>›</span>
+            </div>
+        </div>
     </div>
 
     <div id="screen-services" class="screen">
         <h1>Выберите услугу</h1>
-        <div id="services-list"></div>
+        <div id="services-container"></div>
     </div>
 
     <div id="screen-masters" class="screen">
         <h1>Выберите мастера</h1>
-        <div id="masters-list"></div>
+        <div id="masters-container"></div>
     </div>
 
-    <div id="screen-datetime" class="screen">
-        <h1>Выберите время</h1>
-        <h2 id="selected-date-display">Завтра, 11 Января</h2>
-        <div class="time-grid" id="time-grid">
-            <div class="time-slot" onclick="selectTime(this, '10:00')">10:00</div>
-            <div class="time-slot" onclick="selectTime(this, '12:00')">12:00</div>
-            <div class="time-slot" onclick="selectTime(this, '14:30')">14:30</div>
-            <div class="time-slot" onclick="selectTime(this, '16:00')">16:00</div>
-            <div class="time-slot" onclick="selectTime(this, '18:00')">18:00</div>
-        </div>
+    <div id="screen-time" class="screen">
+        <h1>Дата и время</h1>
+        <p style="color: var(--hint-color); margin-bottom: 15px;">Завтра, 25 Октября</p>
+        <div class="time-grid" id="time-container">
+            </div>
     </div>
 
-    <div id="screen-success" class="screen">
-        <span class="success-icon">✅</span>
+    <div id="screen-success" class="screen" style="text-align: center; padding-top: 50px;">
+        <div style="font-size: 60px;">✅</div>
         <h1>Вы записаны!</h1>
-        <div class="summary-box" id="success-summary"></div>
-        <p style="text-align: center; color: var(--hint-color);">Мы пришлем напоминание за 2 часа до визита.</p>
+        <p style="color: var(--hint-color);">Ждем вас в салоне «Сфера Маникюра».</p>
+        <div class="card" style="text-align: left; margin-top: 30px;" id="success-details"></div>
     </div>
 
     <script>
         const tg = window.Telegram.WebApp;
-        tg.expand();
+        tg.expand(); // На весь экран
 
-        // --- ДАННЫЕ (Имитация БД) ---
+        // --- ДАННЫЕ ---
         const services = [
-            { id: 1, name: "Маникюр + Покрытие", price: 2500 },
-            { id: 2, name: "Педикюр SMART", price: 3200 },
-            { id: 3, name: "Коррекция бровей", price: 1200 },
-            { id: 4, name: "Наращивание ногтей", price: 4000 }
+            { id: 1, name: "Маникюр с покрытием", price: 2200 },
+            { id: 2, name: "Педикюр SMART", price: 3000 },
+            { id: 3, name: "Архитектура бровей", price: 1200 },
+            { id: 4, name: "Снятие без покрытия", price: 500 }
         ];
 
         const masters = [
-            { id: 1, name: "Вера (Топ-мастер)" },
-            { id: 2, name: "Анна" },
-            { id: 3, name: "Марина" }
+            { id: 1, name: "Вера", role: "Топ-мастер" },
+            { id: 2, name: "Елена", role: "Мастер" },
+            { id: 3, name: "Алина", role: "Стажер" }
         ];
 
-        // Начальные записи пользователя
+        // Имитация БД записей пользователя
         let myAppointments = [
-            {
-                id: 101,
-                service: "Маникюр + Покрытие",
-                master: "Вера (Топ-мастер)",
-                date: "10.01.2025",
-                time: "14:00",
-                price: 2500
-            }
+            { id: 99, service: "Маникюр с покрытием", master: "Вера", time: "10:00", price: 2200 }
         ];
 
-        // Временное хранилище для процесса бронирования
-        let newBooking = { service: null, master: null, time: null };
+        let bookingDraft = {}; // Черновик новой записи
 
-        // --- ИНИЦИАЛИЗАЦИЯ ---
-        // Получаем имя из URL
+        // --- ЛОГИКА ---
+        
+        // Получаем имя пользователя из URL
         const urlParams = new URLSearchParams(window.location.search);
-        const userName = urlParams.get('user') || 'Гость';
-        document.getElementById('greeting').innerText = `Привет, ${userName}! 👋`;
+        const user = urlParams.get('user') || 'Гость';
+        document.getElementById('greeting').innerText = `👋 Привет, ${user}!`;
 
-        renderHome();
+        // Система навигации
+        let historyStack = ['screen-home'];
 
-        // Настройка главной кнопки (MainButton)
-        tg.MainButton.setText("ЗАПИСАТЬСЯ ОНЛАЙН");
-        tg.MainButton.show();
-        tg.MainButton.onClick(() => {
-            if (currentScreen === 'screen-home') {
-                showScreen('screen-services');
-            } else if (currentScreen === 'screen-datetime') {
-                finalizeBooking();
-            } else if (currentScreen === 'screen-success') {
-                showScreen('screen-home');
-            }
-        });
-
-        // Настройка кнопки "Назад"
-        tg.BackButton.onClick(() => {
-            if (currentScreen === 'screen-services') showScreen('screen-home');
-            else if (currentScreen === 'screen-masters') showScreen('screen-services');
-            else if (currentScreen === 'screen-datetime') showScreen('screen-masters');
-            else if (currentScreen === 'screen-success') showScreen('screen-home');
-        });
-
-        let currentScreen = 'screen-home';
-
-        // --- ФУНКЦИИ НАВИГАЦИИ ---
         function showScreen(screenId) {
-            // Скрываем все экраны
+            // Скрываем все
             document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
             // Показываем нужный
             document.getElementById(screenId).classList.add('active');
-            currentScreen = screenId;
-
-            // Управление кнопками Telegram
+            
+            // Управление кнопкой Назад и MainButton
             if (screenId === 'screen-home') {
                 tg.BackButton.hide();
                 tg.MainButton.setText("ЗАПИСАТЬСЯ ОНЛАЙН");
@@ -194,136 +176,164 @@
                 tg.MainButton.show();
             } else {
                 tg.BackButton.show();
-                tg.MainButton.hide(); // Прячем кнопку, пока не выберет время
+                tg.MainButton.hide();
             }
-            
-            // Если экран выбора времени, показываем кнопку "Подтвердить", если время выбрано
-            if (screenId === 'screen-datetime' && newBooking.time) {
-                tg.MainButton.setText(`ЗАПИСАТЬСЯ ЗА ${newBooking.service.price} ₽`);
+
+            // Особая логика для экрана времени
+            if (screenId === 'screen-time' && bookingDraft.time) {
+                tg.MainButton.setText(`ПОДТВЕРДИТЬ: ${bookingDraft.price} ₽`);
                 tg.MainButton.show();
             }
         }
 
-        // --- ЛОГИКА ГЛАВНОГО ЭКРАНА ---
+        // КЛИК ПО MAIN BUTTON
+        tg.MainButton.onClick(() => {
+            const current = document.querySelector('.screen.active').id;
+            if (current === 'screen-home') {
+                historyStack.push('screen-services');
+                showScreen('screen-services');
+            } else if (current === 'screen-time') {
+                confirmBooking();
+            } else if (current === 'screen-success') {
+                historyStack = ['screen-home'];
+                showScreen('screen-home');
+            }
+        });
+
+        // КЛИК ПО BACK BUTTON
+        tg.BackButton.onClick(() => {
+            if (historyStack.length > 1) {
+                historyStack.pop();
+                showScreen(historyStack[historyStack.length - 1]);
+            }
+        });
+
+        // --- РЕНДЕРИНГ ЭЛЕМЕНТОВ ---
+
         function renderAppointments() {
-            const container = document.getElementById('appointments-container');
-            container.innerHTML = '';
+            const list = document.getElementById('appointments-list');
+            list.innerHTML = '';
             
             if (myAppointments.length === 0) {
-                document.getElementById('empty-msg').style.display = 'block';
+                document.getElementById('empty-state').style.display = 'block';
                 return;
             } else {
-                document.getElementById('empty-msg').style.display = 'none';
+                document.getElementById('empty-state').style.display = 'none';
             }
 
             myAppointments.forEach(app => {
-                const card = document.createElement('div');
-                card.className = 'card';
-                card.innerHTML = `
-                    <div class="card-row">
-                        <span style="font-weight:bold; font-size:16px;">${app.service}</span>
-                        <span class="card-status">Активна</span>
+                const el = document.createElement('div');
+                el.className = 'card';
+                el.innerHTML = `
+                    <div class="info-row">
+                        <span style="font-weight:700; font-size:16px">${app.service}</span>
+                        <span class="status-badge">Записан</span>
                     </div>
-                    <div class="card-row"><span class="card-label">Мастер:</span> <span>${app.master}</span></div>
-                    <div class="card-row"><span class="card-label">Дата:</span> <span>${app.date} в ${app.time}</span></div>
-                    <div class="card-row"><span class="card-label">Цена:</span> <span>${app.price} ₽</span></div>
-                    <div class="actions">
-                        <button class="act-btn btn-reschedule" onclick="reschedule(${app.id})">Перенести</button>
-                        <button class="act-btn btn-cancel" onclick="cancelApp(${app.id})">Отменить</button>
+                    <div class="info-row"><span class="info-label">Мастер:</span> ${app.master}</div>
+                    <div class="info-row"><span class="info-label">Время:</span> 25 Окт, ${app.time}</div>
+                    <div class="btn-row">
+                        <button class="btn-small btn-outline" onclick="tg.showAlert('Функция переноса будет доступна в полной версии')">Перенести</button>
+                        <button class="btn-small btn-danger" onclick="cancelBooking(${app.id})">Отменить</button>
                     </div>
                 `;
-                container.appendChild(card);
+                list.appendChild(el);
             });
         }
 
-        function cancelApp(id) {
+        // Генерация услуг
+        const sContainer = document.getElementById('services-container');
+        services.forEach(s => {
+            const el = document.createElement('div');
+            el.className = 'list-item';
+            el.innerHTML = `<span>${s.name}</span> <b>${s.price} ₽</b>`;
+            el.onclick = () => {
+                bookingDraft.service = s.name;
+                bookingDraft.price = s.price;
+                historyStack.push('screen-masters');
+                showScreen('screen-masters');
+            };
+            sContainer.appendChild(el);
+        });
+
+        // Генерация мастеров
+        const mContainer = document.getElementById('masters-container');
+        masters.forEach(m => {
+            const el = document.createElement('div');
+            el.className = 'list-item';
+            el.innerHTML = `<span>${m.name} <span style="color:var(--hint-color); font-size:12px">(${m.role})</span></span> <span>›</span>`;
+            el.onclick = () => {
+                bookingDraft.master = m.name;
+                historyStack.push('screen-time');
+                showScreen('screen-time');
+            };
+            mContainer.appendChild(el);
+        });
+
+        // Генерация времени
+        const times = ["10:00", "11:30", "13:00", "15:00", "16:30", "18:00", "19:30"];
+        const tContainer = document.getElementById('time-container');
+        times.forEach(t => {
+            const el = document.createElement('div');
+            el.className = 'time-chip';
+            el.innerText = t;
+            el.onclick = function() {
+                // Снять выделение с других
+                document.querySelectorAll('.time-chip').forEach(c => c.classList.remove('selected'));
+                this.classList.add('selected');
+                bookingDraft.time = t;
+                tg.MainButton.setText(`ПОДТВЕРДИТЬ: ${bookingDraft.price} ₽`);
+                tg.MainButton.show();
+            };
+            tContainer.appendChild(el);
+        });
+
+        // --- ДЕЙСТВИЯ ---
+
+        function cancelBooking(id) {
             tg.showPopup({
-                title: 'Отмена записи',
-                message: 'Вы действительно хотите отменить запись?',
-                buttons: [{type: 'destructive', text: 'Да, отменить'}, {type: 'cancel', text: 'Нет'}]
-            }, (btn) => {
-                if (btn === 'destructive') {
+                title: 'Отмена',
+                message: 'Точно отменить запись?',
+                buttons: [{type: 'destructive', text: 'Да'}, {type: 'cancel', text: 'Нет'}]
+            }, (btnId) => {
+                if (btnId === 'destructive') {
                     myAppointments = myAppointments.filter(a => a.id !== id);
                     renderAppointments();
-                    tg.showAlert("Запись отменена");
                 }
             });
         }
 
-        function reschedule(id) {
-            tg.showAlert("В демо-режиме функция переноса только открывает этот диалог. В реальности здесь открылся бы календарь.");
-        }
-
-        // --- ЛОГИКА БРОНИРОВАНИЯ ---
-        
-        // 1. Рендер услуг
-        const servicesList = document.getElementById('services-list');
-        services.forEach(s => {
-            const div = document.createElement('div');
-            div.className = 'list-item';
-            div.innerHTML = `<span>${s.name}</span> <span class="item-price">${s.price} ₽</span>`;
-            div.onclick = () => {
-                newBooking.service = s;
-                showScreen('screen-masters');
-            };
-            servicesList.appendChild(div);
-        });
-
-        // 2. Рендер мастеров
-        const mastersList = document.getElementById('masters-list');
-        masters.forEach(m => {
-            const div = document.createElement('div');
-            div.className = 'list-item';
-            div.innerHTML = `<span>${m.name}</span> <span>ℹ️</span>`;
-            div.onclick = () => {
-                newBooking.master = m;
-                showScreen('screen-datetime');
-            };
-            mastersList.appendChild(div);
-        });
-
-        // 3. Выбор времени
-        function selectTime(el, time) {
-            document.querySelectorAll('.time-slot').forEach(t => t.classList.remove('selected'));
-            el.classList.add('selected');
-            newBooking.time = time;
+        function confirmBooking() {
+            if (!bookingDraft.time) return;
             
-            tg.MainButton.setText(`ПОДТВЕРДИТЬ: ${newBooking.service.price} ₽`);
-            tg.MainButton.show();
-        }
-
-        // 4. Финал
-        function finalizeBooking() {
-            if (!newBooking.time) return;
-
-            // Добавляем новую запись в массив "базы данных"
-            const newId = Date.now();
+            // Сохраняем в "БД"
             myAppointments.push({
-                id: newId,
-                service: newBooking.service.name,
-                master: newBooking.master.name,
-                date: "11.01.2025", // Хардкод для демо
-                time: newBooking.time,
-                price: newBooking.service.price
+                id: Date.now(),
+                service: bookingDraft.service,
+                master: bookingDraft.master,
+                time: bookingDraft.time,
+                price: bookingDraft.price
             });
 
-            // Заполняем экран успеха
-            document.getElementById('success-summary').innerHTML = `
-                <div><b>Услуга:</b> ${newBooking.service.name}</div>
-                <div style="margin-top:5px;"><b>Мастер:</b> ${newBooking.master.name}</div>
-                <div style="margin-top:5px;"><b>Время:</b> 11.01.2025 в ${newBooking.time}</div>
+            // Заполняем чек
+            document.getElementById('success-details').innerHTML = `
+                <div class="info-row"><span class="info-label">Услуга:</span> ${bookingDraft.service}</div>
+                <div class="info-row"><span class="info-label">Мастер:</span> ${bookingDraft.master}</div>
+                <div class="info-row"><span class="info-label">Дата:</span> 25 Октября, ${bookingDraft.time}</div>
+                <div class="info-row"><span class="info-label">Сумма:</span> <b>${bookingDraft.price} ₽</b></div>
             `;
 
-            // Сброс выбора
-            newBooking = { service: null, master: null, time: null };
-            document.querySelectorAll('.time-slot').forEach(t => t.classList.remove('selected'));
-
+            // Сброс и переход
+            bookingDraft = {};
+            document.querySelectorAll('.time-chip').forEach(c => c.classList.remove('selected'));
+            historyStack.push('screen-success');
             showScreen('screen-success');
             tg.HapticFeedback.notificationOccurred('success');
         }
 
-        // Рендер начального экрана
-        renderHome();
+        // Старт
+        renderAppointments();
+        tg.MainButton.setText("ЗАПИСАТЬСЯ ОНЛАЙН");
+        tg.MainButton.show();
 
     </script>
 </body>
