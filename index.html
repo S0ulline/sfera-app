@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Памятка: Перманентный макияж | Сфера Маникюра</title>
+  <title>Перманентный макияж | Сфера Маникюра</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&family=Cormorant+Garamond:wght@600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <style>
@@ -30,32 +30,17 @@
       background-color: var(--bg-color);
       color: var(--text-color);
       line-height: 1.6;
-      padding-top: 155px;
+      padding-top: 20px;
       overflow-x: hidden;
     }
 
-    /* Навигация */
+    /* Статичная шапка с логотипом */
     header {
-      position: fixed;
-      top: 0;
-      left: 0;
       width: 100%;
-      background-color: var(--nav-bg);
-      box-shadow: 0 2px 15px rgba(216, 150, 163, 0.15);
-      z-index: 1000;
-      backdrop-filter: blur(5px);
-      -webkit-backdrop-filter: blur(5px);
-      transition: all 0.3s ease;
-    }
-
-    .header-container {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 15px 15px 10px;
+      padding: 10px 15px 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 12px;
     }
 
     .logo-wrapper {
@@ -74,34 +59,51 @@
     }
 
     .logo-img {
-      max-height: 45px;
+      max-height: 55px;
       width: auto;
       object-fit: contain;
     }
 
     .logo-fallback {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 26px;
+      font-size: 28px;
       color: var(--accent-color);
       font-weight: 600;
       letter-spacing: 1px;
     }
 
     .service-name {
-      font-size: 10px;
+      font-size: 11px;
       text-transform: uppercase;
       letter-spacing: 2px;
       color: #888;
       font-weight: 500;
+      margin-top: 5px;
+    }
+
+    /* Навигация в формате ОСТРОВА */
+    .nav-island {
+      position: sticky;
+      top: 15px;
+      z-index: 1000;
+      margin: 0 auto 30px auto;
+      background-color: var(--nav-bg);
+      border-radius: 50px;
+      box-shadow: 0 8px 25px rgba(216, 150, 163, 0.25);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      width: fit-content;
+      max-width: calc(100% - 30px);
+      padding: 6px;
+      display: flex;
     }
 
     .nav-links {
       display: flex;
-      gap: 10px;
+      gap: 6px;
       overflow-x: auto;
       width: 100%;
       justify-content: flex-start;
-      padding-bottom: 8px;
       scrollbar-width: none;
       -webkit-overflow-scrolling: touch;
       scroll-behavior: smooth;
@@ -117,9 +119,9 @@
       font-size: 13px;
       font-weight: 500;
       white-space: nowrap;
-      padding: 8px 14px;
-      border-radius: 20px;
-      background-color: var(--bg-color);
+      padding: 10px 16px;
+      border-radius: 30px;
+      background-color: transparent;
       transition: background-color 0.3s ease, color 0.3s ease;
     }
 
@@ -259,6 +261,15 @@
       margin-top: 15px;
     }
 
+    .intro-text p {
+      margin-bottom: 15px;
+      text-align: justify;
+    }
+
+    .intro-text p:last-child {
+      margin-bottom: 0;
+    }
+
     footer {
       display: flex;
       flex-direction: column;
@@ -305,16 +316,14 @@
     }
 
     @media (min-width: 600px) {
-      body { padding-top: 165px; }
-      .header-container { padding: 15px 20px; }
-      .nav-links { justify-content: center; gap: 15px; }
-      .nav-links a { font-size: 14px; padding: 8px 16px; }
+      body { padding-top: 30px; }
       .page-title h1 { font-size: 42px; }
       h2 { font-size: 30px; }
       .care-grid { grid-template-columns: 1fr 1fr; }
       .care-card, .time-block { padding: 25px; }
       .time-block h3, .care-card h3 { font-size: 16px; }
       .time-block ul li, .care-card p { font-size: 15px; }
+      .intro-text p { text-align: center; }
     }
   </style>
 </head>
@@ -327,22 +336,34 @@
         <img src="logo-accent.png" alt="Сфера Маникюра" class="logo-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
         <span class="logo-fallback" style="display: none;">СФЕРА МАНИКЮРА</span>
       </a>
-      <span class="service-name">Перманентный макияж</span>
+      <span class="service-name">Памятка клиента</span>
     </div>
-    <nav class="nav-links" id="nav-container">
-      <a href="#preparation" class="active">Подготовка</a>
-      <a href="#care">Уход</a>
-      <a href="#healing">Заживление</a>
-      <a href="#contraindications">Противопоказания</a>
-    </nav>
   </div>
 </header>
+
+<div class="nav-island" id="nav-island">
+  <nav class="nav-links" id="nav-container">
+    <a href="#description" class="active">Описание</a>
+    <a href="#preparation">Подготовка</a>
+    <a href="#care">Уход</a>
+    <a href="#healing">Заживление</a>
+    <a href="#contraindications">Противопоказания</a>
+  </nav>
+</div>
 
 <main>
   <div class="page-title">
     <h1>Перманентный макияж</h1>
-    <p>Памятка для клиента</p>
   </div>
+
+  <section id="description">
+    <h2>О процедуре</h2>
+    <div class="care-card intro-text">
+      <p><strong>Перманентный макияж</strong> (далее ПМ) — это косметическая процедура, при которой красящее вещество аккуратно вводится в верхний слой кожи с помощью специального аппарата. Это позволяет подчеркнуть естественную красоту, скорректировать форму и создать эффект безупречного макияжа.</p>
+      <p>В процессе «ношения» пигмент постепенно отторгается организмом. В зависимости от особенностей вашей иммунной системы, типа кожи и возраста, результат сохраняется от нескольких месяцев до нескольких лет. Для поддержания идеального вида требуются периодические процедуры обновления («рефреш») с интервалом от полугода до трех лет.</p>
+      <p class="alert-text">Для того чтобы пигмент прижился максимально равномерно, а заживление прошло быстро и без осложнений, крайне важно строго соблюдать правила подготовки и ухода!</p>
+    </div>
+  </section>
 
   <section id="preparation">
     <h2>Подготовка к процедуре</h2>
@@ -411,7 +432,7 @@
       </div>
 
       <div class="care-card">
-        <h3>Брови и Веки</h3>
+        <h3>Брови</h3>
         <ul>
           <li>Наносить мазь БЕПАНТЕН 3 раза в день тонким слоем.</li>
           <li>Не спать на боку в период заживления, чтобы избежать повреждения корки.</li>
@@ -434,12 +455,12 @@
     <h2>Процесс заживления</h2>
     <div class="care-card">
       <ul>
-        <li>Цвет перманентного макияжа сразу после проведения процедуры выглядит на <strong>40%-60% ярче</strong> ожидаемого результата.</li>
+        <li>Цвет ПМ сразу после проведения процедуры выглядит на <strong>40%-60% ярче</strong> ожидаемого результата.</li>
         <li>Примерно 5 дней зона будет яркой, затем начнется шелушение. <strong>После выпадения корок цвет станет контрастно светлым!</strong>.</li>
         <li>Спустя 3-4 недели со дня процедуры цвет постепенно восстановится, и вы увидите окончательный результат.</li>
         <li>При жирной, пористой или толстой коже пигмент укрепляется хуже и со временем может расплываться. Коррекция может требоваться чаще (каждые 3-6 месяцев).</li>
       </ul>
-      <span class="alert-text">Процедура перманентного макияжа делается в 2 (иногда в 3) этапа и считается незавершенной без коррекции! Коррекция проводится через месяц-полтора.</span>
+      <span class="alert-text">Процедура ПМ делается в 2 (иногда в 3) этапа и считается незавершенной без коррекции! Коррекция проводится через месяц-полтора.</span>
     </div>
   </section>
 
@@ -486,13 +507,13 @@
 
 <footer>
   <div class="social-links">
-    <a href="https://vk.com/твой_профиль" target="_blank" aria-label="ВКонтакте">
+    <a href="https://vk.com/sferamanicura" target="_blank" aria-label="ВКонтакте">
       <i class="fa-brands fa-vk"></i>
     </a>
-    <a href="https://t.me/твоя_группа" target="_blank" aria-label="Telegram">
+    <a href="https://t.me/+727sgCts_cs0NGUy" target="_blank" aria-label="Telegram">
       <i class="fa-brands fa-telegram"></i>
     </a>
-    <a href="https://instagram.com/твой_профиль" target="_blank" aria-label="Instagram">
+    <a href="https://instagram.com/sfera_manicura" target="_blank" aria-label="Instagram">
       <i class="fa-brands fa-instagram"></i>
     </a>
   </div>
@@ -500,8 +521,7 @@
 </footer>
 
 <script>
-  // Скрипты для навигации и скролла
-  const header = document.getElementById("main-header");
+  const navIsland = document.getElementById("nav-island");
   const navContainer = document.getElementById("nav-container");
   const navLinks = document.querySelectorAll(".nav-links a");
   const sections = document.querySelectorAll("section");
@@ -514,8 +534,9 @@
       const targetSection = document.getElementById(targetId);
 
       if (targetSection) {
-        const headerHeight = header.offsetHeight;
-        const targetPosition = targetSection.getBoundingClientRect().top + window.scrollY - headerHeight - 20;
+        // Учитываем высоту острова и его отступ (top: 15px) + небольшой запас
+        const islandOffset = navIsland.offsetHeight + 15 + 20;
+        const targetPosition = targetSection.getBoundingClientRect().top + window.scrollY - islandOffset;
 
         window.scrollTo({
           top: targetPosition,
@@ -527,11 +548,11 @@
 
   window.addEventListener("scroll", () => {
     let currentId = "";
-    const headerHeight = header.offsetHeight;
+    const islandOffset = navIsland.offsetHeight + 15 + 40;
 
     sections.forEach(section => {
       const sectionTop = section.offsetTop;
-      if (window.scrollY >= sectionTop - headerHeight - 50) {
+      if (window.scrollY >= sectionTop - islandOffset) {
         currentId = section.getAttribute("id");
       }
     });
