@@ -1,340 +1,521 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Сфера Маникюра</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <style>
-        :root {
-            --bg-color: var(--tg-theme-bg-color, #ffffff);
-            --text-color: var(--tg-theme-text-color, #222222);
-            --hint-color: var(--tg-theme-hint-color, #a8a8a8);
-            --main-color: #e91e63; /* Брендовый розовый */
-            --secondary-bg: var(--tg-theme-secondary-bg-color, #f4f4f5);
-            --block-bg: var(--tg-theme-bg-color, #ffffff);
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Памятка клиента | Сфера Маникюра</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&family=Cormorant+Garamond:wght@600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    :root {
+      --bg-color: #fdf5f6;
+      --text-color: #4a4a4a;
+      --accent-color: #d896a3;
+      --card-bg: #ffffff;
+      --nav-bg: rgba(255, 255, 255, 0.95);
+    }
 
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--secondary-bg);
-            color: var(--text-color);
-            -webkit-font-smoothing: antialiased;
-        }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-        /* Анимация переходов */
-        .screen { display: none; padding: 16px; padding-bottom: 80px; animation: fadeEffect 0.2s; }
-        .screen.active { display: block; }
-        @keyframes fadeEffect { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+    html {
+      scroll-behavior: auto;
+    }
 
-        /* Заголовки */
-        h1 { font-size: 22px; margin: 10px 0 20px 0; font-weight: 700; }
-        h3 { font-size: 14px; text-transform: uppercase; color: var(--hint-color); margin: 20px 0 10px 0; letter-spacing: 0.5px; }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      padding-top: 140px;
+      overflow-x: hidden;
+    }
 
-        /* Карточки */
-        .card {
-            background: var(--block-bg);
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 12px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
+    /* Навигация */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: var(--nav-bg);
+      box-shadow: 0 2px 15px rgba(216, 150, 163, 0.15);
+      z-index: 1000;
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      transition: all 0.3s ease;
+    }
 
-        /* Элементы списка (меню) */
-        .list-item {
-            display: flex; justify-content: space-between; align-items: center;
-            background: var(--block-bg);
-            padding: 16px;
-            border-bottom: 1px solid var(--secondary-bg);
-            cursor: pointer;
-        }
-        .list-item:first-child { border-top-left-radius: 12px; border-top-right-radius: 12px; }
-        .list-item:last-child { border-bottom-left-radius: 12px; border-bottom-right-radius: 12px; border-bottom: none; }
-        .list-item:active { background-color: var(--secondary-bg); }
+    .header-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 15px 15px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
 
-        /* Кнопки в карточке записи */
-        .btn-row { display: flex; gap: 10px; margin-top: 15px; }
-        .btn-small {
-            flex: 1; padding: 10px; border-radius: 8px; font-size: 13px; font-weight: 600; border: none; cursor: pointer;
-        }
-        .btn-outline { background: transparent; border: 1px solid var(--main-color); color: var(--main-color); }
-        .btn-danger { background: rgba(255, 59, 48, 0.1); color: #ff3b30; }
+    .logo {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-decoration: none;
+      width: 100%;
+    }
 
-        /* Сетка времени */
-        .time-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-        .time-chip {
-            background: var(--block-bg); padding: 10px; border-radius: 8px; text-align: center; font-size: 14px;
-            border: 1px solid transparent; cursor: pointer;
-        }
-        .time-chip.selected { background: var(--main-color); color: white; box-shadow: 0 4px 10px rgba(233, 30, 99, 0.3); }
+    .logo-img {
+      max-height: 50px;
+      width: auto;
+      object-fit: contain;
+    }
 
-        /* Инфо-блоки */
-        .info-row { display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 14px; }
-        .info-label { color: var(--hint-color); }
-        .status-badge { background: #e0f2f1; color: #00695c; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
-    </style>
+    .logo-fallback {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 26px;
+      color: var(--accent-color);
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      width: 100%;
+      justify-content: flex-start;
+      padding-bottom: 8px;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+      scroll-behavior: smooth;
+    }
+
+    .nav-links::-webkit-scrollbar {
+      display: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-color);
+      font-size: 13px;
+      font-weight: 500;
+      white-space: nowrap;
+      padding: 8px 14px;
+      border-radius: 20px;
+      background-color: var(--bg-color);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .nav-links a.active {
+      background-color: var(--accent-color);
+      color: #fff;
+    }
+
+    @media (hover: hover) {
+      .nav-links a:hover {
+        background-color: var(--accent-color);
+        color: #fff;
+        opacity: 0.9;
+      }
+    }
+
+    /* Основной контент */
+    main {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 15px 20px;
+    }
+
+    section {
+      margin-bottom: 50px;
+      padding-top: 20px;
+    }
+
+    h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      margin-bottom: 20px;
+      text-align: center;
+      color: var(--accent-color);
+      line-height: 1.2;
+    }
+
+    .subtitle {
+      text-align: center;
+      margin-bottom: 25px;
+      font-size: 14px;
+      padding: 0 10px;
+    }
+
+    /* Карточки подготовки и списки */
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .time-block {
+      background: var(--card-bg);
+      padding: 18px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(216, 150, 163, 0.08);
+      border-left: 4px solid var(--accent-color);
+    }
+
+    .time-block h3 {
+      font-size: 15px;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--accent-color);
+    }
+
+    .time-block ul,
+    .care-card ul {
+      list-style-type: none;
+    }
+
+    .time-block ul li,
+    .care-card ul li {
+      position: relative;
+      padding-left: 18px;
+      margin-bottom: 6px;
+      font-size: 14px;
+      line-height: 1.4;
+      color: var(--text-color);
+    }
+
+    .time-block ul li::before,
+    .care-card ul li::before {
+      content: '•';
+      color: var(--accent-color);
+      font-size: 18px;
+      position: absolute;
+      left: 0;
+      top: -2px;
+    }
+
+    /* Карточки ухода и противопоказаний */
+    .care-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 15px;
+    }
+
+    .care-card {
+      background: var(--card-bg);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(216, 150, 163, 0.08);
+    }
+
+    .care-card h3 {
+      font-size: 17px;
+      margin-bottom: 12px;
+      border-bottom: 1px solid #fdf5f6;
+      padding-bottom: 8px;
+      color: var(--accent-color);
+    }
+
+    .care-card p {
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+
+    .alert-text {
+      color: #d896a3;
+      font-weight: 600;
+      text-align: center;
+      display: block;
+      margin-top: 15px;
+    }
+
+    /* Подвал и соцсети */
+    footer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+      padding: 30px 15px 25px;
+      margin-top: 30px;
+      background-color: white;
+      border-radius: 20px 20px 0 0;
+      box-shadow: 0 -4px 15px rgba(216, 150, 163, 0.05);
+    }
+
+    .social-links {
+      display: flex;
+      gap: 15px;
+    }
+
+    .social-links a {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 44px;
+      height: 44px;
+      background-color: var(--bg-color);
+      color: var(--accent-color);
+      border-radius: 50%;
+      text-decoration: none;
+      font-size: 22px; /* Размер иконок Font Awesome */
+      transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+    }
+
+    @media (hover: hover) {
+      .social-links a:hover {
+        background-color: var(--accent-color);
+        color: #fff;
+        transform: translateY(-3px);
+      }
+    }
+
+    .footer-text {
+      font-size: 13px;
+      color: #888;
+      text-align: center;
+    }
+
+    @media (min-width: 600px) {
+      body { padding-top: 150px; }
+      .header-container { padding: 15px 20px; }
+      .nav-links { justify-content: center; gap: 15px; }
+      .nav-links a { font-size: 14px; padding: 8px 16px; }
+      h2 { font-size: 32px; }
+      .subtitle { font-size: 16px; }
+      .care-grid { grid-template-columns: 1fr 1fr; }
+      .care-card, .time-block { padding: 25px; }
+      .time-block h3, .care-card h3 { font-size: 16px; }
+      .time-block ul li, .care-card p { font-size: 15px; }
+    }
+  </style>
 </head>
 <body>
 
-    <div id="screen-home" class="screen active">
-        <h1 id="greeting">👋 Добрый день!</h1>
-        
-        <h3>Мои записи</h3>
-        <div id="appointments-list">
-            </div>
-        <div id="empty-state" style="text-align: center; color: var(--hint-color); margin-top: 40px; display: none;">
-            У вас пока нет активных записей.
-        </div>
+<header id="main-header">
+  <div class="header-container">
+    <a href="#" class="logo">
+      <img src="logo-accent.png" alt="Сфера Маникюра" class="logo-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+      <span class="logo-fallback" style="display: none;">СФЕРА МАНИКЮРА</span>
+    </a>
+    <nav class="nav-links" id="nav-container">
+      <a href="#preparation" class="active">Подготовка</a>
+      <a href="#care">Уход</a>
+      <a href="#healing">Заживление</a>
+      <a href="#contraindications">Противопоказания</a>
+    </nav>
+  </div>
+</header>
 
-        <h3>Наше меню</h3>
-        <div class="list-wrapper">
-            <div class="list-item" onclick="alert('Здесь могла быть инфо о салоне')">
-                <span>📍 О салоне</span> <span>›</span>
-            </div>
-            <div class="list-item" onclick="alert('Здесь прайс-лист')">
-                <span>💲 Прайс-лист</span> <span>›</span>
-            </div>
-        </div>
+<main>
+  <section id="preparation">
+    <h2>Подготовка к процедуре</h2>
+    <p class="subtitle">Для идеального результата необходимо строго исключить:</p>
+
+    <div class="timeline">
+      <div class="time-block">
+        <h3>За месяц</h3>
+        <ul>
+          <li>Контурную/инъекционную косметологию в зоне воздействия</li>
+        </ul>
+      </div>
+
+      <div class="time-block">
+        <h3>За 2 недели</h3>
+        <ul>
+          <li>Длительное нахождение на солнце / солярий (зона лица)</li>
+          <li>Химические пилинги в зоне воздействия</li>
+          <li>Разжижающие кровь препараты (аспирин, спиртосодержащие препараты и пр.), антибиотики, кортикостероиды, ретиноиды</li>
+        </ul>
+      </div>
+
+      <div class="time-block">
+        <h3>За неделю (для бровей)</h3>
+        <ul>
+          <li>Не щипать</li>
+          <li>Не окрашивать</li>
+          <li>Не делать долговременную укладку</li>
+        </ul>
+      </div>
+
+      <div class="time-block">
+        <h3>За 48 часов</h3>
+        <ul>
+          <li>Алкоголь</li>
+        </ul>
+      </div>
+
+      <div class="time-block">
+        <h3>В день процедуры</h3>
+        <ul>
+          <li>Энергетические напитки</li>
+          <li>Напитки, содержащие кофеин</li>
+          <li>Кофе</li>
+        </ul>
+      </div>
+
+      <div class="time-block">
+        <h3>За 2 часа</h3>
+        <ul>
+          <li>Курение</li>
+        </ul>
+      </div>
     </div>
+  </section>
 
-    <div id="screen-services" class="screen">
-        <h1>Выберите услугу</h1>
-        <div id="services-container"></div>
+  <section id="care">
+    <h2>Правила ухода</h2>
+    <div class="care-grid">
+      <div class="care-card">
+        <h3>Общие правила</h3>
+        <p>Зону ПМ первые 5 дней смазывать заживляющим кремом, который вам выдали.</p>
+        <p>7 дней <strong>не ходить</strong> в бани, сауны, солярии.</p>
+        <span class="alert-text">Зону ПМ ЗАПРЕЩЕНО скрабировать в период заживления!</span>
+      </div>
+
+      <div class="care-card">
+        <h3>Брови</h3>
+        <p>Через 2 часа после процедуры необходимо протереть салфетками, которые вам выдали.</p>
+        <p>Перед сном брови промыть либо пенкой для умывания, либо протереть хлоргексидином. Далее намазать крем.</p>
+      </div>
+
+      <div class="care-card" style="grid-column: 1 / -1;">
+        <h3>Губы</h3>
+        <p>Первые 2 часа после процедуры <strong>острое и горячее запрещено</strong>.</p>
+        <p>Рекомендуется пропить противовирусные, такие как Валтрекс, Валвир, Валацикловир (строго по инструкции).</p>
+      </div>
     </div>
+  </section>
 
-    <div id="screen-masters" class="screen">
-        <h1>Выберите мастера</h1>
-        <div id="masters-container"></div>
+  <section id="healing">
+    <h2>Процесс заживления</h2>
+    <div class="care-card">
+      <p><strong>~ 5 дней</strong> зона ПМ будет яркая, далее начнется шелушение (у всех степень шелушения разная).</p>
+      <p>После шелушения зона ПМ станет бледнее, в течение <strong>2-3 недель</strong> проявится до 40-50% цвета.</p>
+      <p>Далее нужно делать коррекцию (через месяц-полтора).</p>
+      <span class="alert-text">Процедура перманентного макияжа делается в 2 (иногда в 3) этапа и считается незавершенной без коррекции!</span>
     </div>
+  </section>
 
-    <div id="screen-time" class="screen">
-        <h1>Дата и время</h1>
-        <p style="color: var(--hint-color); margin-bottom: 15px;">Завтра, 25 Октября</p>
-        <div class="time-grid" id="time-container">
-            </div>
+  <section id="contraindications">
+    <h2>Противопоказания</h2>
+
+    <div class="care-grid">
+      <div class="care-card">
+        <h3>Абсолютные</h3>
+        <ul>
+          <li>Эпилепсия</li>
+          <li>Анафилактический шок, отек Квинке</li>
+          <li>Келоидная болезнь</li>
+          <li>Аллергические реакции на пигменты (при наличии заболеваний необходимо выяснить подробности образований на зоне процедуры: пигментные пятна, меланомы, бородавки, родинки, невусы, выпуклые ангиомы, рак кожи)</li>
+          <li>Невусы и бородавки сначала удаляются, а потом уже по рубцу делается микропигментирование</li>
+          <li>Крапивница, импетиго, псориаз, пигментация, хлоазма</li>
+          <li>Любые прогрессивные и активные фазы протекания кожных заболеваний (любое вмешательство может спровоцировать стадию клинической манифестации)</li>
+        </ul>
+      </div>
+
+      <div class="care-card">
+        <h3>Временные</h3>
+        <ul>
+          <li>Менструация</li>
+          <li>Герпес</li>
+          <li>Ослабленная иммунная система</li>
+          <li>Беременность, кормление грудью</li>
+          <li>Гематома</li>
+          <li>Незажившие рубцы</li>
+          <li>Солнечные ожоги</li>
+          <li>Химиотерапия</li>
+          <li>Местный дерматит</li>
+          <li>Язвы</li>
+          <li>Грибковые и вирусные заболевания</li>
+          <li>Акне</li>
+          <li>Прием антибиотиков</li>
+          <li>Прием фотосенсибилизирующих средств (Вертепорфин, Пастернака посевного препарата — Ламадин, Оксорален, Псоберан, Псорален, Пувален, Фотогем, Фотолон, Фотосенс, Аласенс, Аммифурин)</li>
+        </ul>
+      </div>
     </div>
+  </section>
 
-    <div id="screen-success" class="screen" style="text-align: center; padding-top: 50px;">
-        <div style="font-size: 60px;">✅</div>
-        <h1>Вы записаны!</h1>
-        <p style="color: var(--hint-color);">Ждем вас в салоне «Сфера Маникюра».</p>
-        <div class="card" style="text-align: left; margin-top: 30px;" id="success-details"></div>
-    </div>
+</main>
 
-    <script>
-        const tg = window.Telegram.WebApp;
-        tg.expand(); // На весь экран
+<footer>
+  <div class="social-links">
+    <a href="https://vk.com/твой_профиль" target="_blank" aria-label="ВКонтакте">
+      <i class="fa-brands fa-vk"></i>
+    </a>
 
-        // --- ДАННЫЕ ---
-        const services = [
-            { id: 1, name: "Маникюр с покрытием", price: 2200 },
-            { id: 2, name: "Педикюр SMART", price: 3000 },
-            { id: 3, name: "Архитектура бровей", price: 1200 },
-            { id: 4, name: "Снятие без покрытия", price: 500 }
-        ];
+    <a href="https://t.me/твоя_группа" target="_blank" aria-label="Telegram">
+      <i class="fa-brands fa-telegram"></i>
+    </a>
 
-        const masters = [
-            { id: 1, name: "Вера", role: "Топ-мастер" },
-            { id: 2, name: "Елена", role: "Мастер" },
-            { id: 3, name: "Алина", role: "Стажер" }
-        ];
+    <a href="https://instagram.com/твой_профиль" target="_blank" aria-label="Instagram">
+      <i class="fa-brands fa-instagram"></i>
+    </a>
+  </div>
+  <p class="footer-text">© Сфера Маникюра. Ждем вас снова!</p>
+</footer>
 
-        // Имитация БД записей пользователя
-        let myAppointments = [
-            { id: 99, service: "Маникюр с покрытием", master: "Вера", time: "10:00", price: 2200 }
-        ];
+<script>
+  // Скрипты для навигации и скролла
+  const header = document.getElementById("main-header");
+  const navContainer = document.getElementById("nav-container");
+  const navLinks = document.querySelectorAll(".nav-links a");
+  const sections = document.querySelectorAll("section");
 
-        let bookingDraft = {}; // Черновик новой записи
+  // 1. Плавный скролл при клике на меню
+  navLinks.forEach(link => {
+    link.addEventListener("click", function(e) {
+      e.preventDefault();
 
-        // --- ЛОГИКА ---
-        
-        // Получаем имя пользователя из URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const user = urlParams.get('user') || 'Гость';
-        document.getElementById('greeting').innerText = `👋 Привет, ${user}!`;
+      const targetId = this.getAttribute("href").substring(1);
+      const targetSection = document.getElementById(targetId);
 
-        // Система навигации
-        let historyStack = ['screen-home'];
+      if (targetSection) {
+        const headerHeight = header.offsetHeight;
+        const targetPosition = targetSection.getBoundingClientRect().top + window.scrollY - headerHeight - 20;
 
-        function showScreen(screenId) {
-            // Скрываем все
-            document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
-            // Показываем нужный
-            document.getElementById(screenId).classList.add('active');
-            
-            // Управление кнопкой Назад и MainButton
-            if (screenId === 'screen-home') {
-                tg.BackButton.hide();
-                tg.MainButton.setText("ЗАПИСАТЬСЯ ОНЛАЙН");
-                tg.MainButton.show();
-                renderAppointments(); // Обновляем список
-            } else if (screenId === 'screen-success') {
-                tg.BackButton.hide();
-                tg.MainButton.setText("НА ГЛАВНУЮ");
-                tg.MainButton.show();
-            } else {
-                tg.BackButton.show();
-                tg.MainButton.hide();
-            }
+        window.scrollTo({
+          top: targetPosition,
+          behavior: "smooth"
+        });
+      }
+    });
+  });
 
-            // Особая логика для экрана времени
-            if (screenId === 'screen-time' && bookingDraft.time) {
-                tg.MainButton.setText(`ПОДТВЕРДИТЬ: ${bookingDraft.price} ₽`);
-                tg.MainButton.show();
-            }
+  // 2. Точная подсветка активного пункта меню при скроллинге
+  window.addEventListener("scroll", () => {
+    let currentId = "";
+    const headerHeight = header.offsetHeight;
+
+    sections.forEach(section => {
+      const sectionTop = section.offsetTop;
+      if (window.scrollY >= sectionTop - headerHeight - 50) {
+        currentId = section.getAttribute("id");
+      }
+    });
+
+    navLinks.forEach(link => {
+      link.classList.remove("active");
+
+      if (link.getAttribute("href") === `#${currentId}`) {
+        link.classList.add("active");
+
+        // Плавная горизонтальная центровка активного пункта меню
+        const linkRect = link.getBoundingClientRect();
+        const containerRect = navContainer.getBoundingClientRect();
+
+        if (linkRect.left < containerRect.left || linkRect.right > containerRect.right) {
+          const scrollPos = link.offsetLeft - (containerRect.width / 2) + (link.offsetWidth / 2);
+          navContainer.scrollTo({
+            left: scrollPos,
+            behavior: "smooth"
+          });
         }
-
-        // КЛИК ПО MAIN BUTTON
-        tg.MainButton.onClick(() => {
-            const current = document.querySelector('.screen.active').id;
-            if (current === 'screen-home') {
-                historyStack.push('screen-services');
-                showScreen('screen-services');
-            } else if (current === 'screen-time') {
-                confirmBooking();
-            } else if (current === 'screen-success') {
-                historyStack = ['screen-home'];
-                showScreen('screen-home');
-            }
-        });
-
-        // КЛИК ПО BACK BUTTON
-        tg.BackButton.onClick(() => {
-            if (historyStack.length > 1) {
-                historyStack.pop();
-                showScreen(historyStack[historyStack.length - 1]);
-            }
-        });
-
-        // --- РЕНДЕРИНГ ЭЛЕМЕНТОВ ---
-
-        function renderAppointments() {
-            const list = document.getElementById('appointments-list');
-            list.innerHTML = '';
-            
-            if (myAppointments.length === 0) {
-                document.getElementById('empty-state').style.display = 'block';
-                return;
-            } else {
-                document.getElementById('empty-state').style.display = 'none';
-            }
-
-            myAppointments.forEach(app => {
-                const el = document.createElement('div');
-                el.className = 'card';
-                el.innerHTML = `
-                    <div class="info-row">
-                        <span style="font-weight:700; font-size:16px">${app.service}</span>
-                        <span class="status-badge">Записан</span>
-                    </div>
-                    <div class="info-row"><span class="info-label">Мастер:</span> ${app.master}</div>
-                    <div class="info-row"><span class="info-label">Время:</span> 25 Окт, ${app.time}</div>
-                    <div class="btn-row">
-                        <button class="btn-small btn-outline" onclick="tg.showAlert('Функция переноса будет доступна в полной версии')">Перенести</button>
-                        <button class="btn-small btn-danger" onclick="cancelBooking(${app.id})">Отменить</button>
-                    </div>
-                `;
-                list.appendChild(el);
-            });
-        }
-
-        // Генерация услуг
-        const sContainer = document.getElementById('services-container');
-        services.forEach(s => {
-            const el = document.createElement('div');
-            el.className = 'list-item';
-            el.innerHTML = `<span>${s.name}</span> <b>${s.price} ₽</b>`;
-            el.onclick = () => {
-                bookingDraft.service = s.name;
-                bookingDraft.price = s.price;
-                historyStack.push('screen-masters');
-                showScreen('screen-masters');
-            };
-            sContainer.appendChild(el);
-        });
-
-        // Генерация мастеров
-        const mContainer = document.getElementById('masters-container');
-        masters.forEach(m => {
-            const el = document.createElement('div');
-            el.className = 'list-item';
-            el.innerHTML = `<span>${m.name} <span style="color:var(--hint-color); font-size:12px">(${m.role})</span></span> <span>›</span>`;
-            el.onclick = () => {
-                bookingDraft.master = m.name;
-                historyStack.push('screen-time');
-                showScreen('screen-time');
-            };
-            mContainer.appendChild(el);
-        });
-
-        // Генерация времени
-        const times = ["10:00", "11:30", "13:00", "15:00", "16:30", "18:00", "19:30"];
-        const tContainer = document.getElementById('time-container');
-        times.forEach(t => {
-            const el = document.createElement('div');
-            el.className = 'time-chip';
-            el.innerText = t;
-            el.onclick = function() {
-                // Снять выделение с других
-                document.querySelectorAll('.time-chip').forEach(c => c.classList.remove('selected'));
-                this.classList.add('selected');
-                bookingDraft.time = t;
-                tg.MainButton.setText(`ПОДТВЕРДИТЬ: ${bookingDraft.price} ₽`);
-                tg.MainButton.show();
-            };
-            tContainer.appendChild(el);
-        });
-
-        // --- ДЕЙСТВИЯ ---
-
-        function cancelBooking(id) {
-            tg.showPopup({
-                title: 'Отмена',
-                message: 'Точно отменить запись?',
-                buttons: [{type: 'destructive', text: 'Да'}, {type: 'cancel', text: 'Нет'}]
-            }, (btnId) => {
-                if (btnId === 'destructive') {
-                    myAppointments = myAppointments.filter(a => a.id !== id);
-                    renderAppointments();
-                }
-            });
-        }
-
-        function confirmBooking() {
-            if (!bookingDraft.time) return;
-            
-            // Сохраняем в "БД"
-            myAppointments.push({
-                id: Date.now(),
-                service: bookingDraft.service,
-                master: bookingDraft.master,
-                time: bookingDraft.time,
-                price: bookingDraft.price
-            });
-
-            // Заполняем чек
-            document.getElementById('success-details').innerHTML = `
-                <div class="info-row"><span class="info-label">Услуга:</span> ${bookingDraft.service}</div>
-                <div class="info-row"><span class="info-label">Мастер:</span> ${bookingDraft.master}</div>
-                <div class="info-row"><span class="info-label">Дата:</span> 25 Октября, ${bookingDraft.time}</div>
-                <div class="info-row"><span class="info-label">Сумма:</span> <b>${bookingDraft.price} ₽</b></div>
-            `;
-
-            // Сброс и переход
-            bookingDraft = {};
-            document.querySelectorAll('.time-chip').forEach(c => c.classList.remove('selected'));
-            historyStack.push('screen-success');
-            showScreen('screen-success');
-            tg.HapticFeedback.notificationOccurred('success');
-        }
-
-        // Старт
-        renderAppointments();
-        tg.MainButton.setText("ЗАПИСАТЬСЯ ОНЛАЙН");
-        tg.MainButton.show();
-
-    </script>
+      }
+    });
+  });
+</script>
 </body>
 </html>
