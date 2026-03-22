@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Памятка клиента | Сфера Маникюра</title>
+  <title>Памятка: Перманентный макияж | Сфера Маникюра</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&family=Cormorant+Garamond:wght@600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <style>
@@ -30,7 +30,7 @@
       background-color: var(--bg-color);
       color: var(--text-color);
       line-height: 1.6;
-      padding-top: 140px;
+      padding-top: 155px;
       overflow-x: hidden;
     }
 
@@ -58,16 +58,23 @@
       gap: 12px;
     }
 
+    .logo-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      width: 100%;
+    }
+
     .logo {
       display: flex;
       justify-content: center;
       align-items: center;
       text-decoration: none;
-      width: 100%;
     }
 
     .logo-img {
-      max-height: 50px;
+      max-height: 45px;
       width: auto;
       object-fit: contain;
     }
@@ -78,6 +85,14 @@
       color: var(--accent-color);
       font-weight: 600;
       letter-spacing: 1px;
+    }
+
+    .service-name {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #888;
+      font-weight: 500;
     }
 
     .nav-links {
@@ -128,28 +143,41 @@
       padding: 0 15px 20px;
     }
 
+    .page-title {
+      text-align: center;
+      margin-bottom: 35px;
+      padding-top: 10px;
+    }
+
+    .page-title h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 36px;
+      color: var(--accent-color);
+      line-height: 1.2;
+      margin-bottom: 5px;
+    }
+
+    .page-title p {
+      font-size: 15px;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
     section {
       margin-bottom: 50px;
-      padding-top: 20px;
+      padding-top: 10px;
     }
 
     h2 {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 28px;
-      margin-bottom: 20px;
+      font-size: 26px;
+      margin-bottom: 25px;
       text-align: center;
-      color: var(--accent-color);
+      color: var(--text-color);
       line-height: 1.2;
     }
 
-    .subtitle {
-      text-align: center;
-      margin-bottom: 25px;
-      font-size: 14px;
-      padding: 0 10px;
-    }
-
-    /* Карточки подготовки и списки */
     .timeline {
       display: flex;
       flex-direction: column;
@@ -197,7 +225,6 @@
       top: -2px;
     }
 
-    /* Карточки ухода и противопоказаний */
     .care-grid {
       display: grid;
       grid-template-columns: 1fr;
@@ -232,7 +259,6 @@
       margin-top: 15px;
     }
 
-    /* Подвал и соцсети */
     footer {
       display: flex;
       flex-direction: column;
@@ -260,7 +286,7 @@
       color: var(--accent-color);
       border-radius: 50%;
       text-decoration: none;
-      font-size: 22px; /* Размер иконок Font Awesome */
+      font-size: 22px;
       transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
     }
 
@@ -279,12 +305,12 @@
     }
 
     @media (min-width: 600px) {
-      body { padding-top: 150px; }
+      body { padding-top: 165px; }
       .header-container { padding: 15px 20px; }
       .nav-links { justify-content: center; gap: 15px; }
       .nav-links a { font-size: 14px; padding: 8px 16px; }
-      h2 { font-size: 32px; }
-      .subtitle { font-size: 16px; }
+      .page-title h1 { font-size: 42px; }
+      h2 { font-size: 30px; }
       .care-grid { grid-template-columns: 1fr 1fr; }
       .care-card, .time-block { padding: 25px; }
       .time-block h3, .care-card h3 { font-size: 16px; }
@@ -296,10 +322,13 @@
 
 <header id="main-header">
   <div class="header-container">
-    <a href="#" class="logo">
-      <img src="logo-accent.png" alt="Сфера Маникюра" class="logo-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-      <span class="logo-fallback" style="display: none;">СФЕРА МАНИКЮРА</span>
-    </a>
+    <div class="logo-wrapper">
+      <a href="#" class="logo">
+        <img src="logo-accent.png" alt="Сфера Маникюра" class="logo-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+        <span class="logo-fallback" style="display: none;">СФЕРА МАНИКЮРА</span>
+      </a>
+      <span class="service-name">Перманентный макияж</span>
+    </div>
     <nav class="nav-links" id="nav-container">
       <a href="#preparation" class="active">Подготовка</a>
       <a href="#care">Уход</a>
@@ -310,56 +339,57 @@
 </header>
 
 <main>
+  <div class="page-title">
+    <h1>Перманентный макияж</h1>
+    <p>Памятка для клиента</p>
+  </div>
+
   <section id="preparation">
     <h2>Подготовка к процедуре</h2>
-    <p class="subtitle">Для идеального результата необходимо строго исключить:</p>
 
     <div class="timeline">
       <div class="time-block">
         <h3>За месяц</h3>
         <ul>
-          <li>Контурную/инъекционную косметологию в зоне воздействия</li>
+          <li>Исключить контурную/инъекционную косметологию в зоне воздействия.</li>
         </ul>
       </div>
 
       <div class="time-block">
         <h3>За 2 недели</h3>
         <ul>
-          <li>Длительное нахождение на солнце / солярий (зона лица)</li>
-          <li>Химические пилинги в зоне воздействия</li>
-          <li>Разжижающие кровь препараты (аспирин, спиртосодержащие препараты и пр.), антибиотики, кортикостероиды, ретиноиды</li>
+          <li>Длительное нахождение на солнце / солярий (зона лица).</li>
+          <li>Химические пилинги в зоне воздействия.</li>
+          <li>Разжижающие кровь препараты (аспирин, спиртосодержащие препараты и пр.), антибиотики, кортикостероиды, ретиноиды.</li>
         </ul>
       </div>
 
       <div class="time-block">
         <h3>За неделю (для бровей)</h3>
         <ul>
-          <li>Не щипать</li>
-          <li>Не окрашивать</li>
-          <li>Не делать долговременную укладку</li>
+          <li>Не щипать, не окрашивать и не делать долговременную укладку.</li>
         </ul>
       </div>
 
       <div class="time-block">
-        <h3>За 48 часов</h3>
+        <h3>За 4 дня</h3>
         <ul>
-          <li>Алкоголь</li>
+          <li>Исключить алкогольные напитки в любом количестве (также нельзя употреблять в течение 2 дней после процедуры).</li>
         </ul>
       </div>
 
       <div class="time-block">
         <h3>В день процедуры</h3>
         <ul>
-          <li>Энергетические напитки</li>
-          <li>Напитки, содержащие кофеин</li>
-          <li>Кофе</li>
+          <li>Натуральный кофе, энергетические напитки и напитки, содержащие кофеин.</li>
+          <li>Перед процедурой необходимо тщательно снять макияж, а при процедуре на веках — снять линзы.</li>
         </ul>
       </div>
 
       <div class="time-block">
         <h3>За 2 часа</h3>
         <ul>
-          <li>Курение</li>
+          <li>Исключить курение.</li>
         </ul>
       </div>
     </div>
@@ -370,21 +400,32 @@
     <div class="care-grid">
       <div class="care-card">
         <h3>Общие правила</h3>
-        <p>Зону ПМ первые 5 дней смазывать заживляющим кремом, который вам выдали.</p>
-        <p>7 дней <strong>не ходить</strong> в бани, сауны, солярии.</p>
-        <span class="alert-text">Зону ПМ ЗАПРЕЩЕНО скрабировать в период заживления!</span>
+        <ul>
+          <li>Спустя 2 часа после процедуры начните наносить мазь БЕПАНТЕН (детская).</li>
+          <li>Общее время такого ухода составляет строго 2 недели.</li>
+          <li>В первый день <strong>запрещено</strong> мочить зону процедуры проточной водой. Со второго дня при умывании не трите зону процедуры.</li>
+          <li>Нельзя сдирать корку преждевременно! Первичная корка должна сойти самостоятельно через 3-14 дней.</li>
+          <li>Не париться в бане, не купаться в водоемах и в бассейне.</li>
+          <li>Не загорать в период заживления и после в течение 1-3 месяцев. Спустя 1 месяц обязательно наносить защитные крема от солнца на зону процедуры.</li>
+        </ul>
       </div>
 
       <div class="care-card">
-        <h3>Брови</h3>
-        <p>Через 2 часа после процедуры необходимо протереть салфетками, которые вам выдали.</p>
-        <p>Перед сном брови промыть либо пенкой для умывания, либо протереть хлоргексидином. Далее намазать крем.</p>
+        <h3>Брови и Веки</h3>
+        <ul>
+          <li>Наносить мазь БЕПАНТЕН 3 раза в день тонким слоем.</li>
+          <li>Не спать на боку в период заживления, чтобы избежать повреждения корки.</li>
+          <li>При ПМ век рекомендуется использовать успокаивающие и противовоспалительные капли для глаз (по рекомендации врача).</li>
+        </ul>
       </div>
 
       <div class="care-card" style="grid-column: 1 / -1;">
         <h3>Губы</h3>
-        <p>Первые 2 часа после процедуры <strong>острое и горячее запрещено</strong>.</p>
-        <p>Рекомендуется пропить противовирусные, такие как Валтрекс, Валвир, Валацикловир (строго по инструкции).</p>
+        <ul>
+          <li>Наносить мазь БЕПАНТЕН 6 раз в день средним слоем.</li>
+          <li>Первые 2 часа после процедуры острое и горячее запрещено.</li>
+          <li>Рекомендуется профилактическое применение противовирусных препаратов (таких как Валтрекс, Валвир, Валацикловир) строго по инструкции и рекомендации врача.</li>
+        </ul>
       </div>
     </div>
   </section>
@@ -392,10 +433,13 @@
   <section id="healing">
     <h2>Процесс заживления</h2>
     <div class="care-card">
-      <p><strong>~ 5 дней</strong> зона ПМ будет яркая, далее начнется шелушение (у всех степень шелушения разная).</p>
-      <p>После шелушения зона ПМ станет бледнее, в течение <strong>2-3 недель</strong> проявится до 40-50% цвета.</p>
-      <p>Далее нужно делать коррекцию (через месяц-полтора).</p>
-      <span class="alert-text">Процедура перманентного макияжа делается в 2 (иногда в 3) этапа и считается незавершенной без коррекции!</span>
+      <ul>
+        <li>Цвет перманентного макияжа сразу после проведения процедуры выглядит на <strong>40%-60% ярче</strong> ожидаемого результата.</li>
+        <li>Примерно 5 дней зона будет яркой, затем начнется шелушение. <strong>После выпадения корок цвет станет контрастно светлым!</strong>.</li>
+        <li>Спустя 3-4 недели со дня процедуры цвет постепенно восстановится, и вы увидите окончательный результат.</li>
+        <li>При жирной, пористой или толстой коже пигмент укрепляется хуже и со временем может расплываться. Коррекция может требоваться чаще (каждые 3-6 месяцев).</li>
+      </ul>
+      <span class="alert-text">Процедура перманентного макияжа делается в 2 (иногда в 3) этапа и считается незавершенной без коррекции! Коррекция проводится через месяц-полтора.</span>
     </div>
   </section>
 
@@ -404,35 +448,35 @@
 
     <div class="care-grid">
       <div class="care-card">
-        <h3>Абсолютные</h3>
+        <h3>Абсолютные (Категоричные)</h3>
         <ul>
-          <li>Эпилепсия</li>
-          <li>Анафилактический шок, отек Квинке</li>
-          <li>Келоидная болезнь</li>
-          <li>Аллергические реакции на пигменты (при наличии заболеваний необходимо выяснить подробности образований на зоне процедуры: пигментные пятна, меланомы, бородавки, родинки, невусы, выпуклые ангиомы, рак кожи)</li>
-          <li>Невусы и бородавки сначала удаляются, а потом уже по рубцу делается микропигментирование</li>
-          <li>Крапивница, импетиго, псориаз, пигментация, хлоазма</li>
-          <li>Любые прогрессивные и активные фазы протекания кожных заболеваний (любое вмешательство может спровоцировать стадию клинической манифестации)</li>
+          <li>Простуда (COVID, ОРВИ), воспалительные процессы в организме.</li>
+          <li>Заболевания крови, анемия, гемофилия.</li>
+          <li>Аутоиммунные нарушения.</li>
+          <li>Сахарный диабет (инсулинозависимая форма).</li>
+          <li>Беременность.</li>
+          <li>Рецидивирующий герпес, псориаз.</li>
+          <li>Конъюнктивит (в период обострения).</li>
+          <li>Астма, повышенный аллергический фон.</li>
+          <li>Эпилепсия, заболевания нервной системы.</li>
+          <li>Онкология (только по разрешению врача).</li>
+          <li>Родинки, бородавки, папилломы в зоне воздействия.</li>
+          <li>ВИЧ, СПИД, Гепатит.</li>
+          <li>Брекеты (при процедуре ПМ губ).</li>
         </ul>
       </div>
 
       <div class="care-card">
-        <h3>Временные</h3>
+        <h3>Относительные (Временные)</h3>
         <ul>
-          <li>Менструация</li>
-          <li>Герпес</li>
-          <li>Ослабленная иммунная система</li>
-          <li>Беременность, кормление грудью</li>
-          <li>Гематома</li>
-          <li>Незажившие рубцы</li>
-          <li>Солнечные ожоги</li>
-          <li>Химиотерапия</li>
-          <li>Местный дерматит</li>
-          <li>Язвы</li>
-          <li>Грибковые и вирусные заболевания</li>
-          <li>Акне</li>
-          <li>Прием антибиотиков</li>
-          <li>Прием фотосенсибилизирующих средств (Вертепорфин, Пастернака посевного препарата — Ламадин, Оксорален, Псоберан, Псорален, Пувален, Фотогем, Фотолон, Фотосенс, Аласенс, Аммифурин)</li>
+          <li>Заболевания эндокринной системы (щитовидка).</li>
+          <li>Заболевания желудочно-кишечного тракта (гастрит, язва).</li>
+          <li>Менструальный период, лактация.</li>
+          <li>Кожные заболевания: обострение угревой сыпи, повышенная чувствительность, склонность к образованию келоидных рубцов.</li>
+          <li>Сердечно-сосудистая система: гипертония, гипотония, пороки сердца.</li>
+          <li>Блефаропластика (ПМ возможен не ранее, чем через 2 месяца).</li>
+          <li>Жирная, чувствительная, пористая кожа.</li>
+          <li>Плохое самочувствие, сниженный иммунитет.</li>
         </ul>
       </div>
     </div>
@@ -445,11 +489,9 @@
     <a href="https://vk.com/твой_профиль" target="_blank" aria-label="ВКонтакте">
       <i class="fa-brands fa-vk"></i>
     </a>
-
     <a href="https://t.me/твоя_группа" target="_blank" aria-label="Telegram">
       <i class="fa-brands fa-telegram"></i>
     </a>
-
     <a href="https://instagram.com/твой_профиль" target="_blank" aria-label="Instagram">
       <i class="fa-brands fa-instagram"></i>
     </a>
@@ -464,7 +506,6 @@
   const navLinks = document.querySelectorAll(".nav-links a");
   const sections = document.querySelectorAll("section");
 
-  // 1. Плавный скролл при клике на меню
   navLinks.forEach(link => {
     link.addEventListener("click", function(e) {
       e.preventDefault();
@@ -484,7 +525,6 @@
     });
   });
 
-  // 2. Точная подсветка активного пункта меню при скроллинге
   window.addEventListener("scroll", () => {
     let currentId = "";
     const headerHeight = header.offsetHeight;
@@ -502,7 +542,6 @@
       if (link.getAttribute("href") === `#${currentId}`) {
         link.classList.add("active");
 
-        // Плавная горизонтальная центровка активного пункта меню
         const linkRect = link.getBoundingClientRect();
         const containerRect = navContainer.getBoundingClientRect();
 
